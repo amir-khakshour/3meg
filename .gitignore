@@ -54,4 +54,4 @@ MANIFEST
 # Per-project virtualenvs
 .venv*/
 src/.env
-src/files/static/
+src/db.sqlite3
