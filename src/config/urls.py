@@ -19,6 +19,12 @@ urlpatterns += [
     path('<api:version>/api-token-refresh/', refresh_jwt_token),
 ]
 
+# Plant app
+urlpatterns += [
+    path('<api:version>/plant/', include('plant.api.urls'))
+]
+
+
 if settings.DEBUG:
     import debug_toolbar
 

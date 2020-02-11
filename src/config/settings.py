@@ -143,6 +143,25 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1',
     ]
+# ------------------------------------------#
+# Rest Framework
+# ------------------------------------------#
+INSTALLED_APPS += (
+    'rest_framework',
+    'rest_framework.authtoken',
+)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+}
 
 # ------------------------------------------#
 # Plant App
