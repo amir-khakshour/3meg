@@ -11,22 +11,34 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APPS_DIR = os.path.join(BASE_DIR, 'apps')
+BSAE_FILES_PATH = os.path.join(BASE_DIR, 'files')
+STATIC_ROOT = os.path.join(BSAE_FILES_PATH, 'static')
+MEDIA_ROOT = os.path.join(BSAE_FILES_PATH, 'media')
+sys.path.insert(2, APPS_DIR)
 
+env = environ.Env(DEBUG=(bool, False), )  # set default values and casting
+env.read_env(
+    env.path(
+        'ENV_FILE_PATH',
+        default=(environ.Path(__file__) - 2).path('.env')()
+    )())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '90i5epe%81u^v17s_b(up)ik6=5rbms2w0n+*9m70rbn@&jvaz'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -39,15 +51,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+BASE_MIDDLEWARE_CLASSES = {
+    'django.middleware.security.SecurityMiddleware': 100,
+    'django.contrib.sessions.middleware.SessionMiddleware': 200,
+    'django.middleware.common.CommonMiddleware': 300,
+    'django.middleware.csrf.CsrfViewMiddleware': 400,
+    'django.contrib.auth.middleware.AuthenticationMiddleware': 500,
+    'django.contrib.messages.middleware.MessageMiddleware': 600,
+    'django.middleware.clickjacking.XFrameOptionsMiddleware': 700,
+}
+
+CUSTOM_MIDDLEWARE_CLASSES = {}
 
 ROOT_URLCONF = 'config.urls'
 
@@ -69,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -79,7 +92,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -99,7 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -113,8 +124,29 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# ------------------------------------------#
+# Debug Toolbar
+# ------------------------------------------#
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+    CUSTOM_MIDDLEWARE_CLASSES.update({
+        'debug_toolbar.middleware.DebugToolbarMiddleware':
+            BASE_MIDDLEWARE_CLASSES['django.contrib.sessions.middleware.SessionMiddleware'] + 10000,
+    })
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
+
+#  -------------------------------------------#
+# Don't change following section
+# -------------------------------------------#
+from .utils import build_component_list
+
+MIDDLEWARE = build_component_list(BASE_MIDDLEWARE_CLASSES, CUSTOM_MIDDLEWARE_CLASSES)
