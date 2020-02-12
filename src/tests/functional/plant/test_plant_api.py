@@ -2,7 +2,7 @@ from tests.utils import APITest
 from tests.factories import PlantFactory
 
 
-class CategoryTest(APITest):
+class PlantAPITest(APITest):
     def setUp(self):
         super().setUp()
         self.num_plants = 4

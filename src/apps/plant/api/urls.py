@@ -1,5 +1,11 @@
 from rest_framework import routers
 
-app_name = 'api_plant'
+from .views import (
+    PlantViewSet,
+)
 
-urlpatterns = []
+app_name = 'api_plant'
+router = routers.DefaultRouter()
+router.register(r'plant', PlantViewSet)
+
+urlpatterns = router.urls
