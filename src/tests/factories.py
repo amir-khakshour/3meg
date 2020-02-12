@@ -28,8 +28,8 @@ class DataPointFactory(factory.DjangoModelFactory):
         model = DataPoint
 
     plant = factory.SubFactory(PlantFactory)
-    energy_expected = factory.fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
-    energy_observed = factory.fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
-    irradiation_expected = factory.fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
-    irradiation_observed = factory.fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
-    datetime = factory.fuzzy.FuzzyDateTime(timezone.now() - datetime.timedelta(days=10))
+    energy_expected = fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
+    energy_observed = fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
+    irradiation_expected = fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
+    irradiation_observed = fuzzy.FuzzyDecimal(0.1111111, 80.11111111)
+    datetime = fuzzy.FuzzyDateTime(timezone.now() - datetime.timedelta(days=10))
