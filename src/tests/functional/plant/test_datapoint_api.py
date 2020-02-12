@@ -11,4 +11,4 @@ class DataPointAPITest(APITest):
     def test_datapoint_list(self):
         self.response = self.get("api_plant:datapoint-list")
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), self.datapoint_list)
+        self.assertEqual(len(self.response.body), self.num_datapoints)
