@@ -58,12 +58,12 @@ class APITest(TestCase):
         return True
 
     def api_call(self, url_name, method, session_id=None,
-                 authenticated=False, version=None, url_kwargs=None, data=None):
+                 authenticated=False, url_kwargs=None, data=None):
         if url_kwargs is None:
             url_kwargs = {}
-        if version is None:
-            version = 1
-            url_kwargs.update({'version': version})
+
+        if 'version' not in url_kwargs:
+            url_kwargs.update({'version': 1})
         try:
             url = reverse(url_name, kwargs=url_kwargs)
         except NoReverseMatch:
@@ -84,15 +84,15 @@ class APITest(TestCase):
 
         return response
 
-    def get(self, url_name, session_id=None, authenticated=False, version=None, url_kwargs=None):
+    def get(self, url_name, session_id=None, authenticated=False, url_kwargs=None):
         return self.api_call(
-            url_name, "GET", session_id=session_id, authenticated=authenticated, version=version, url_kwargs=url_kwargs
+            url_name, "GET", session_id=session_id, authenticated=authenticated, url_kwargs=url_kwargs
         )
 
-    def post(self, url_name, session_id=None, authenticated=False, version=None, url_kwargs=None, data=None):
+    def post(self, url_name, session_id=None, authenticated=False, url_kwargs=None, data=None):
         return self.api_call(
             url_name, "POST", session_id=session_id, authenticated=authenticated,
-            version=version, url_kwargs=url_kwargs, data=data
+            url_kwargs=url_kwargs, data=data
         )
 
     def put(self, url_name, session_id=None, authenticated=False, url_kwargs=None, data=None):
