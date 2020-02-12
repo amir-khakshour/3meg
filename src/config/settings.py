@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 import environ
+from .utils import build_component_list
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -174,6 +175,5 @@ DATAPOINT_DATE_FORMAT_FORMAT = '%Y-%m-%dT%H:%M:%S'
 #  -------------------------------------------#
 # Don't change following section
 # -------------------------------------------#
-from .utils import build_component_list
 
 MIDDLEWARE = build_component_list(BASE_MIDDLEWARE_CLASSES, CUSTOM_MIDDLEWARE_CLASSES)
