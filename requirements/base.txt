@@ -7,7 +7,6 @@ django==2.2.9
 djangorestframework-jwt==1.11.0
 djangorestframework==3.11.0
 idna==2.8
-itypes==1.1.0
 jinja2==2.11.1
 markupsafe==1.1.1
 pyjwt==1.7.1
