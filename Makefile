@@ -49,7 +49,7 @@ src_clean:
 	src/manage.py migrate
 
 src_load_data:
-	src/manage.py loaddata src/files/fixtures/data.json
+	src/manage.py loaddata src/fixtures/all_data.json
 
 src_statics:
 	src/manage.py collectstatic --noinput
