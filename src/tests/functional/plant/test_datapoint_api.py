@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from django.urls import reverse
 from django.db.models import Min, Max, Count
@@ -52,7 +53,7 @@ class DataPointAPITest(APITest):
             .values('date') \
             .annotate(total_datapoints=Count('plant_id')).order_by()
         agg = sorted(agg, key=lambda item: item['total_datapoints'])
-        high_volume_item = agg[0]  # get item with the least amount of datapoints in the date
+        high_volume_item = agg[0]  # get item with the least amount of DataPoints in the date
 
         self.response = self.client.get(
             reverse("api_plant:datapoint-list", kwargs={'version': 1}), {'date_exact': high_volume_item['date'], }
@@ -60,3 +61,20 @@ class DataPointAPITest(APITest):
 
         self.response.assertStatusEqual(200)
         self.assertEqual(len(self.response.body), high_volume_item['total_datapoints'])
+
+    def test_datapoint_filter_date_range(self):
+        agg = DataPoint.objects.extra(select={'date': 'date( datetime )'}) \
+            .values('date') \
+            .annotate(total_datapoints=Count('plant_id')).order_by('date')
+        agg = list(agg)
+
+        # get random Item from list
+        random_index = random.randrange(0, len(agg))
+        random_item = agg[random_index]
+        total_datapoints_to_item = sum([item['total_datapoints'] for item in agg[:random_index]])
+        self.response = self.client.get(
+            reverse("api_plant:datapoint-list", kwargs={'version': 1}), {'date_before': random_item['date'], }
+        )
+
+        self.response.assertStatusEqual(200)
+        self.assertEqual(len(self.response.body), total_datapoints_to_item)
