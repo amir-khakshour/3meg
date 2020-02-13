@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter
@@ -6,7 +7,7 @@ from django_filters import rest_framework as filters
 
 from ..models import Plant, DataPoint
 from ..drf.utils import override_serializer
-from .serializers import PlantSerializer, DataPointSerializer
+from .serializers import PlantSerializer, DataPointSerializer, DataPointUpdateSerializer
 from .filters import DataPointFilter
 
 
@@ -25,6 +26,17 @@ class PlantViewSet(viewsets.ModelViewSet):
 
             serializer = self.get_serializer(products, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def datapoints_update(self, request, pk, version=1):
+        # We can use a serializer for validating input dates too but it's not necessary here
+        with override_serializer(self, DataPointUpdateSerializer):
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                # object = self.get_object()
+                return Response(status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DataPointViewSet(viewsets.ModelViewSet):

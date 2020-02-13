@@ -174,6 +174,7 @@ INSTALLED_APPS += [
     'plant',
 ]
 DATAPOINT_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
+DATAPOINT_DATE_FILTER_FORMAT = '%Y-%m-%d'
 
 # Django Filter
 # ------------------------------------------#
