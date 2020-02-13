@@ -22,3 +22,6 @@ flake8 = "*"
 
 [requires]
 python_version = "3.7"
+
+[packages.celery]
+extras = [ "msgpack", "librabbitmq", "auth", "redis",]
