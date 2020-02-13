@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
-import environ
 from .utils import build_component_list
 
 PROJECT_NAME = '3MEGAWAT'
@@ -25,21 +24,14 @@ STATIC_ROOT = os.path.join(BSAE_FILES_PATH, 'static')
 MEDIA_ROOT = os.path.join(BSAE_FILES_PATH, 'media')
 sys.path.insert(2, APPS_DIR)
 
-env = environ.Env(DEBUG=(bool, False), )  # set default values and casting
-env.read_env(
-    env.path(
-        'ENV_FILE_PATH',
-        default=(environ.Path(__file__) - 2).path('.env')()
-    )())
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG')
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = []
 
