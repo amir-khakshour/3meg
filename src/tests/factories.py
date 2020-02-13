@@ -18,6 +18,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 class PlantFactory(factory.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'Plant %d' % n)
+    source_id = factory.Sequence(int)
 
     class Meta:
         model = Plant

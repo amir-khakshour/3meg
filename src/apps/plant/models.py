@@ -6,6 +6,7 @@ from django.template.defaultfilters import date as date_filter
 
 class Plant(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("name"))
+    source_id = models.PositiveIntegerField(verbose_name=_("Source Plant ID"))
 
     class Meta:
         verbose_name = _('Plant')
