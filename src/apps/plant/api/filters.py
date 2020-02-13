@@ -22,7 +22,7 @@ class DataPointFilter(django_filters.FilterSet):
         date_step = value.step  # TODO apply step
 
         if date_after is not None:
-            lookups['%s__gt' % lookup] = date_after
+            lookups['%s__gte' % lookup] = date_after
         if date_before is not None:
             lookups['%s__lt' % lookup] = date_before
         return queryset.filter(**lookups)
