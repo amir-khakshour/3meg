@@ -175,6 +175,7 @@ INSTALLED_APPS += [
 ]
 DATAPOINT_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 DATAPOINT_DATE_FILTER_FORMAT = '%Y-%m-%d'
+DATAPOINT_FETCH_URL_FORMAT = os.getenv('DATAPOINT_FETCH_URL_FORMAT', 'http://localhost:5000/?plant-id={}&from={}&to={}')
 
 # Django Filter
 # ------------------------------------------#

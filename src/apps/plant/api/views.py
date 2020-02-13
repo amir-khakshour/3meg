@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter
 from django_filters import rest_framework as filters
 
+from ..tasks import datapoints_update
 from ..models import Plant, DataPoint
 from ..drf.utils import override_serializer
 from .serializers import PlantSerializer, DataPointSerializer, DataPointUpdateSerializer
@@ -34,6 +35,7 @@ class PlantViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             if serializer.is_valid():
                 # object = self.get_object()
+                datapoints_update.delay(pk, after_date=serializer.data['after'], before_date=serializer.data['before'])
                 return Response(status=status.HTTP_200_OK)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
