@@ -20,7 +20,7 @@ class DataPointAPITest(APITest):
         self.response.assertStatusEqual(200)
         self.assertEqual(len(self.response.body), self.num_datapoints)
 
-    def test_datapoint_filter(self):
+    def test_datapoint_filter_range(self):
         agg = DataPoint.objects.aggregate(datetime__min=Min('datetime'), datetime__max=Max('datetime'), count=Count('id'))
 
         # add one second to make the border more proper
@@ -42,3 +42,21 @@ class DataPointAPITest(APITest):
 
         self.response.assertStatusEqual(200)
         self.assertEqual(len(self.response.body), 0)
+
+    def test_datapoint_filter_exact_date(self):
+        """"
+        Since we have more than one DataPoints so we can use the total
+        number of DataPoints in a day and check it against the API endpoint
+        """
+        agg = DataPoint.objects.extra(select={'date': 'date( datetime )'}) \
+            .values('date') \
+            .annotate(total_datapoints=Count('plant_id')).order_by()
+        agg = sorted(agg, key=lambda item: item['total_datapoints'])
+        high_volume_item = agg[0]  # get item with the least amount of datapoints in the date
+
+        self.response = self.client.get(
+            reverse("api_plant:datapoint-list", kwargs={'version': 1}), {'date': high_volume_item['date'], }
+        )
+
+        self.response.assertStatusEqual(200)
+        self.assertEqual(len(self.response.body), high_volume_item['total_datapoints'])
