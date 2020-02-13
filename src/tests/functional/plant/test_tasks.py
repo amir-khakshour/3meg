@@ -14,11 +14,15 @@ def test_datapoints_update(mock_get):
     :return:
     """
     plant = PlantFactory()
-    datapoints = [{"datetime": "2020-01-01T00:00:00", "expected": {"energy": 56.02760101729767, "irradiation": 5.053311239838092},
+    datapoints = [{"datetime": "2020-01-01T00:00:00",
+                   "expected": {"energy": 56.02760101729767, "irradiation": 5.053311239838092},
                    "observed": {"energy": 48.51819791737828, "irradiation": 66.78311981258118}},
-                  {"datetime": "2020-01-01T01:00:00", "expected": {"energy": 40.77808991181146, "irradiation": 95.23817534518328},
+                  {"datetime": "2020-01-01T01:00:00",
+                   "expected": {"energy": 40.77808991181146, "irradiation": 95.23817534518328},
                    "observed": {"energy": 37.68257746073339, "irradiation": 52.34537793795987}},
-                  {"datetime": "2020-01-01T02:00:00", "expected": {"energy": 8.179597201672234, "irradiation": 6.269232971177307}}]
+                  {"datetime": "2020-01-01T02:00:00",
+                   "expected": {"energy": 8.179597201672234, "irradiation": 6.269232971177307},
+                   "observed": {"energy": 93.5759301703764, "irradiation": 42.038912585036265}}]
 
     mock_get.return_value = Mock(ok=True)
     mock_get.return_value.json.return_value = datapoints

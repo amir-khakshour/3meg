@@ -225,7 +225,17 @@ CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+# Let's make things happen
 
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    # Executes every hour
+    'auto_pull_plant_datapoints': {
+        'task': 'plant.tasks.auto_pull_plant_datapoints',
+        'schedule': crontab(hour='*/1'),
+    },
+}
 #  -------------------------------------------#
 # Don't change following section
 # -------------------------------------------#
