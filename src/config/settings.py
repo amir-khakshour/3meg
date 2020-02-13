@@ -173,7 +173,7 @@ REST_FRAMEWORK = {
 INSTALLED_APPS += [
     'plant',
 ]
-DATAPOINT_DATE_FORMAT_FORMAT = '%Y-%m-%dT%H:%M:%S'
+DATAPOINT_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 # Django Filter
 # ------------------------------------------#

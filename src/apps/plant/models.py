@@ -31,5 +31,5 @@ class DataPoint(models.Model):
         verbose_name_plural = _('Data Points')
 
     def __str__(self):
-        date_format = settings.DATAPOINT_DATE_FORMAT_FORMAT
+        date_format = settings.DATAPOINT_DATETIME_FORMAT
         return 'DataPoint: plant=%s  datetime=%s ' % (self.plant, date_filter(self.datetime, date_format))
