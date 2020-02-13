@@ -233,7 +233,7 @@ CELERY_BEAT_SCHEDULE = {
     # Executes every hour
     'auto_pull_plant_datapoints': {
         'task': 'plant.tasks.auto_pull_plant_datapoints',
-        'schedule': 20,
+        'schedule': crontab(hour='*/1'),
     },
 }
 #  -------------------------------------------#
