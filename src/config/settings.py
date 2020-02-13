@@ -15,6 +15,8 @@ import sys
 import environ
 from .utils import build_component_list
 
+PROJECT_NAME = '3MEGAWAT'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APPS_DIR = os.path.join(BASE_DIR, 'apps')
@@ -165,14 +167,13 @@ REST_FRAMEWORK = {
 }
 
 # ------------------------------------------#
+
 # Plant App
 # ------------------------------------------#
 INSTALLED_APPS += [
     'plant',
 ]
 DATAPOINT_DATE_FORMAT_FORMAT = '%Y-%m-%dT%H:%M:%S'
-
-# ------------------------------------------#
 
 # Django Filter
 # ------------------------------------------#
@@ -186,6 +187,42 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'django_extensions',
 ]
+
+# ------------------------------------------#
+# REDIS
+# ------------------------------------------#
+if os.getenv('REDIS_USER'):
+    REDIS_FORMAT_URL = 'redis://{user}:{passwd}@{host}:{port}/0'
+else:
+    REDIS_FORMAT_URL = 'redis://{host}:{port}/0'
+
+REDIS_URL = REDIS_FORMAT_URL.format(
+    user=os.getenv('REDIS_USER', None),
+    passwd=os.getenv('REDIS_PASS', None),
+    host=os.getenv('REDIS_HOST', 'localhost'),
+    port=os.getenv('REDIS_PORT', '16379')
+)
+
+# ------------------------------------------#
+# CELERY
+# ------------------------------------------#
+CELERY_BROKER_TRANSPORT = os.getenv('CELERY_BROKER_TRANSPORT', 'redis')
+if os.getenv('CELERY_BROKER_USER'):
+    CELERY_FORMAT_URL = "{transport}://{user}:{passwd}@{host}:{port}/1"
+else:
+    CELERY_FORMAT_URL = "{transport}://{host}:{port}/1"
+
+CELERY_BROKER_URL = CELERY_FORMAT_URL.format(
+    transport=os.getenv('CELERY_BROKER_TRANSPORT', 'redis'),
+    user=os.getenv('CELERY_BROKER_USER', None),
+    passwd=os.getenv('CELERY_BROKER_PASS', None),
+    host=os.getenv('CELERY_BROKER_HOST', 'localhost'),
+    port=os.getenv('CELERY_BROKER_PORT', '16379')
+)
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
 
 #  -------------------------------------------#
 # Don't change following section
