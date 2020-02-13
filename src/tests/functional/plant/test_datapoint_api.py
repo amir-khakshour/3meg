@@ -55,7 +55,7 @@ class DataPointAPITest(APITest):
         high_volume_item = agg[0]  # get item with the least amount of datapoints in the date
 
         self.response = self.client.get(
-            reverse("api_plant:datapoint-list", kwargs={'version': 1}), {'date': high_volume_item['date'], }
+            reverse("api_plant:datapoint-list", kwargs={'version': 1}), {'date_exact': high_volume_item['date'], }
         )
 
         self.response.assertStatusEqual(200)
