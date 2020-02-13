@@ -44,3 +44,18 @@ def datapoints_update(plant_id, after_date, before_date):
     except Exception as e:  # TODO add more granularity to exception handling
         msg = str(e)
         logger.error(msg, exc_info=True)
+
+
+@task
+def auto_pull_plant_datapoints():
+    """
+    Pull data for each plant based on hourly range
+    :return:
+    """
+    from plant.models import Plant
+
+    now = make_naive(timezone.now())
+    date_from = now.strftime('%Y-%m-%d %H:00:00')
+    date_to = (now + datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:00:00')
+    for plant_pk in Plant.objects.values_list('pk', flat=True):
+        datapoints_update.delay(plant_pk, date_from, date_to)
