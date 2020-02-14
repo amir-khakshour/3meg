@@ -1,8 +1,10 @@
-import pytest
 from unittest.mock import Mock, patch
-from tests.factories import PlantFactory
-from plant.tasks import datapoints_update
+
+import pytest
+
 from plant.models import DataPoint
+from plant.tasks import datapoints_update
+from tests.factories import PlantFactory
 
 
 @pytest.mark.django_db

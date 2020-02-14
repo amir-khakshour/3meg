@@ -1,15 +1,15 @@
-from rest_framework import viewsets
-from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter
 from django_filters import rest_framework as filters
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
 
-from ..tasks import datapoints_update
-from ..models import Plant, DataPoint
 from ..drf.utils import override_serializer
-from .serializers import PlantSerializer, DataPointSerializer, DataPointUpdateSerializer
+from ..models import DataPoint, Plant
+from ..tasks import datapoints_update
 from .filters import DataPointFilter
+from .serializers import (
+    DataPointSerializer, DataPointUpdateSerializer, PlantSerializer)
 
 
 class PlantViewSet(viewsets.ModelViewSet):

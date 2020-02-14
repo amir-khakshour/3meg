@@ -1,13 +1,13 @@
-import logging
 import datetime
-import requests
-from django.utils import timezone
-from django.utils.timezone import make_naive
-from django.db import transaction
+import logging
 
+import requests
 from celery import shared_task
 from celery.task import task
 from django.conf import settings
+from django.db import transaction
+from django.utils import timezone
+from django.utils.timezone import make_naive
 
 from .utils import prepare_json_datapoint_for_save
 
