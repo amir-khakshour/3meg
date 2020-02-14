@@ -14,7 +14,7 @@ import os
 import sys
 from .utils import build_component_list
 
-PROJECT_NAME = '3MEGAWAT'
+PROJECT_NAME = os.environ.get('PROKECT_NAME', '3MEGAWATT')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

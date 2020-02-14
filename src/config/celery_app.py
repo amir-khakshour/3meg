@@ -6,8 +6,9 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 from celery import Celery
+from .settings import PROJECT_NAME
 
-app = Celery('app')
+app = Celery(PROJECT_NAME)
 app.config_from_object(
     'django.conf:settings',
     namespace='CELERY'
