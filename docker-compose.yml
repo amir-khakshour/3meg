@@ -1,6 +1,17 @@
 version: '3.3'
 
 services:
+  postgres:
+    container_name: ${POSTGRES_HOST}
+    image: postgres
+    networks:
+      - 3meg-network
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
 
   redis:
     image: redis:alpine
@@ -40,10 +51,16 @@ services:
       - MONITORING_TRANSPORT=${MONITORING_TRANSPORT}
       - MONITORING_PORT=${MONITORING_PORT}
       - DATAPOINT_FETCH_URL_FORMAT=${DATAPOINT_FETCH_URL_FORMAT}
+      - POSTGRES_DB_NAME=${POSTGRES_DB_NAME}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     networks:
       - 3meg-network
     depends_on:
       - redis
+      - postgres
 
   celery:
     <<: *backend
@@ -64,6 +81,7 @@ services:
     ports: []
 
 volumes:
+  pg-data:
   django-static:
   redis-data:
 
