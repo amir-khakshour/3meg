@@ -37,7 +37,7 @@ services:
     volumes:
       - django-static:/app/files/static
     ports:
-      - "8000:8000"
+      - "${APP_PORT}:8000"
     environment:
       - PROKECT_NAME=${PROKECT_NAME}
       - SECRET_KEY=${SECRET_KEY}
@@ -61,7 +61,6 @@ services:
     depends_on:
       - redis
       - postgres
-
   celery:
     <<: *backend
     container_name: 3meg_celery
