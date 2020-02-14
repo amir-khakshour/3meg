@@ -8,3 +8,4 @@ DATABASES = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+SECRET_KEY = 'SECRET_KEY'

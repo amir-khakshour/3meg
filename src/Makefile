@@ -1,10 +1,11 @@
 VENV = venv
-.PHONY: build
+PYTEST = $(PWD)/$(VENV)/bin/py.test
 
-all: setup server
-local_setup: setup src_build src_server
+.PHONY: build test clean venv
 
-clean:
+all: clean_py build server
+
+clean_py:
 	find . -name '*.pyc' -delete
 	find . -name '__pycache__' -delete
 	rm -Rf *.egg-info
@@ -14,66 +15,68 @@ clean:
 ##################
 # Install commands
 ##################
-install: install-python install-test ## Install requirements for local development and production
+install: install-base ## Install requirements for local development and production
+install_dev: install install-dev ## Install requirements for local development and production
+install_test: install install-test ## Install requirements for local development and production
 
-install-python: ## Install python requirements
-	pip install -r requirements.txt
+install-base: ## Install python base requirements
+	pip install -r requirements/base.txt
 
 install-test: ## Install test requirements
 	pip install -e .[test]
 
+install-dev: ## Install dev requirements
+	pip install -r requirements/dev.txt
+
 venv: ## Create a virtual env and install test and production requirements
 	$(shell which python3) -m venv $(VENV)
-	$(VENV)/bin/pip install -e .[test]
+	$(VENV)/bin/pip install -r requirements/base.txt
+	$(VENV)/bin/pip install -r requirements/test.txt
 
-setup:
-	pip3.5 install --user --upgrade pipenv
-	pipenv --version
-	pipenv --python 3.7
-	pipenv install --dev
-	pipenv shell
-
+check_venv:
+ifeq ($(VIRTUAL_ENV),)
+	$(error "Run frost from a virtualenv (try 'make venv && source venv/bin/activate')")
+endif
 #############################
 # Sandbox management commands
 #############################
-src: install src_build
-src_build: src_clean src_load_data src_statics
+build: clean load_data statics
 
-src_clean:
+clean:
 	# Remove media
 	-rm -rf src/files/media/images
 	-rm -rf src/files/media/cache
 	-rm -rf src/files/static
 	-rm -f src/db.sqlite
 	# Create database
-	src/manage.py migrate
+	./manage.py migrate
 
-src_load_data:
-	src/manage.py loaddata src/fixtures/all_data.json
+load_data:
+	./manage.py loaddata ./files/fixtures/all_data.json
 
-src_statics:
-	src/manage.py collectstatic --noinput
+statics:
+	./manage.py collectstatic --noinput
 
-src_image:
+image:
 	docker build -t 3megawat:latest .
 
-src_server:
-	pipenv run src/manage.py runserver 127.0.0.1:8080
+server:
+	./manage.py runserver 127.0.0.1:8080
+	
 ##################
 # Tests and checks
 ##################
-test: venv ## Run tests
+test: check_venv ## Run tests
 	$(PYTEST)
 
-retest: venv ## Run failed tests only
+retest: check_venv ## Run failed tests only
 	$(PYTEST) --lf
 
-coverage: venv ## Generate coverage report
+coverage: check_venv ## Generate coverage report
 	$(PYTEST) --cov=apps
 
-lint: ## Run flake8 and isort checks
-	flake8 apps/
-	flake8 tests/
+lint: check_venv ## Run flake8 and isort checks
+	flake8 --max-line-length 120 --exclude */migrations/* $(shell git ls-files | grep \.py$$)
 	isort -c -q --recursive --diff apps/
 	isort -c -q --recursive --diff tests/
 
