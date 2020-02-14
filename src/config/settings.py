@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
+from celery.schedules import crontab
+
 from .utils import build_component_list
 
 PROJECT_NAME = os.environ.get('PROKECT_NAME', '3MEGAWATT')
@@ -168,8 +170,18 @@ INSTALLED_APPS += [
 ]
 DATAPOINT_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 DATAPOINT_DATE_FILTER_FORMAT = '%Y-%m-%d'
-DATAPOINT_FETCH_URL_FORMAT = os.getenv('DATAPOINT_FETCH_URL_FORMAT', 'http://localhost:5000/?plant-id={}&from={}&to={}')
 
+if os.getenv('MONITORING_HOST', None) and os.getenv('MONITORING_PORT', None):
+    DATAPOINT_FETCH_BASE_URL = '{transport}://{host}:{port}/'.format(
+        transport=os.getenv('MONITORING_TRANSPORT', 'http'),
+        host=os.getenv('MONITORING_HOST'),
+        port=os.getenv('MONITORING_PORT')
+    )
+else:
+    # For cases when the DATAPOINT is an external endpoint
+    DATAPOINT_FETCH_BASE_URL = os.getenv('DATAPOINT_FETCH_BASE_URL', 'http://localhost:5000/')
+
+DATAPOINT_FETCH_URL = DATAPOINT_FETCH_BASE_URL + os.getenv('DATAPOINT_FETCH_URL_FORMAT', '?plant-id={}&from={}&to={}')
 # Django Filter
 # ------------------------------------------#
 INSTALLED_APPS += [
@@ -221,7 +233,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 # Let's make things happen
 
-from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
     # Executes every hour

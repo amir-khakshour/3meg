@@ -10,6 +10,12 @@ services:
     networks:
       - 3meg-network
 
+  monitoring:
+    image: 3megawatt/dev-recruiting-challenge-monitor
+    container_name: ${MONITORING_HOST}
+    networks:
+      - 3meg-network
+
   backend: &backend
     restart: always
     container_name: 3meg_backend
@@ -30,6 +36,10 @@ services:
       - CELERY_BROKER_PORT=${CELERY_BROKER_PORT}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
+      - MONITORING_HOST=${MONITORING_HOST}
+      - MONITORING_TRANSPORT=${MONITORING_TRANSPORT}
+      - MONITORING_PORT=${MONITORING_PORT}
+      - DATAPOINT_FETCH_URL_FORMAT=${DATAPOINT_FETCH_URL_FORMAT}
     networks:
       - 3meg-network
     depends_on:

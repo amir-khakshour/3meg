@@ -76,8 +76,8 @@ coverage: check_venv ## Generate coverage report
 
 lint: check_venv ## Run flake8 and isort checks
 	flake8 --max-line-length 120 --exclude */migrations/* $(shell git ls-files | grep \.py$$)
-	isort -c -q --recursive --diff apps/
-	isort -c -q --recursive --diff tests/
+	isort -c -q --recursive  apps/
+	isort -c -q --recursive  tests/
 
 ##################
 # Misc

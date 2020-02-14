@@ -2,6 +2,7 @@ import datetime
 from django.conf import settings
 from django.utils.timezone import make_aware
 
+
 def prepare_json_datapoint_for_save(plant_id, datapoint):
     """
     Convert a json formatted datapoint from monitoring endpoint to the
