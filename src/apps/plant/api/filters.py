@@ -19,7 +19,7 @@ class DataPointFilter(django_filters.FilterSet):
         lookup = '__'.join([name, 'date'])
         date_after = value.start
         date_before = value.stop
-        date_step = value.step  # TODO apply step
+        # date_step = value.step  # TODO apply step
 
         if date_after is not None:
             lookups['%s__gte' % lookup] = date_after

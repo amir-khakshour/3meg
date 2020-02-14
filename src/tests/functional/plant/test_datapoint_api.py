@@ -25,7 +25,8 @@ class DataPointAPITest(APITest):
         self.assertEqual(len(self.response.body), self.num_datapoints)
 
     def test_datapoint_filter_range(self):
-        agg = DataPoint.objects.aggregate(datetime__min=Min('datetime'), datetime__max=Max('datetime'), count=Count('id'))
+        agg = DataPoint.objects.aggregate(datetime__min=Min('datetime'),
+                                          datetime__max=Max('datetime'), count=Count('id'))
 
         # add one second to make the border more proper
         datetime__min = make_naive(agg['datetime__min'] - datetime.timedelta(seconds=1)).strftime('%Y-%m-%d %H:%M:%S')

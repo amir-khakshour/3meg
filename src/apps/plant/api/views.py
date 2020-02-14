@@ -36,7 +36,8 @@ class PlantViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 # object = self.get_object()
                 datapoints_update.delay(pk, after_date=serializer.data['after'], before_date=serializer.data['before'])
-                return Response(status=status.HTTP_200_OK)
+                return Response(data={'success': True, 'message': 'DataPoints pulling in process!'},
+                                status=status.HTTP_202_ACCEPTED)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

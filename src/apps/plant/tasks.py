@@ -1,4 +1,3 @@
-import json
 import logging
 import datetime
 import requests
@@ -32,7 +31,7 @@ def datapoints_update(plant_id, after_date, before_date):
 
     try:
         plant = Plant.objects.get(pk=plant_id)
-        url = settings.DATAPOINT_FETCH_URL_FORMAT.format(plant.source_id, after_date, before_date)
+        url = settings.DATAPOINT_FETCH_URL.format(plant.source_id, after_date, before_date)
         response = requests.get(url)
         data = response.json()
         if data and 'error' not in data:

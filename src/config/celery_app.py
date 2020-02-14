@@ -5,8 +5,8 @@ import os
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-from celery import Celery
-from .settings import PROJECT_NAME
+from celery import Celery  # noqa: E402
+from .settings import PROJECT_NAME  # noqa: E402
 
 app = Celery(PROJECT_NAME)
 app.config_from_object(
@@ -16,6 +16,7 @@ app.config_from_object(
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
 
 @app.task(bind=True)
 def debug_task(self):
