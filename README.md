@@ -7,6 +7,11 @@ docker-compose up --build
 After all containers are up and ready you can access the backend through `http://127.0.0.1:8000`. You can change the server API endpoint port in `.env` file located at the top directory.
  
 ## Endpoints:
+##### Swagger documentations
+You can access swagger documentation of Available endpoints using the following URL:
+```text
+http://127.0.0.1:8000/v1/docs/
+```
 ##### Update DataPoints
 ```text
 // Update datapoints of Plant with id=1

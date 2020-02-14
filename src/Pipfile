@@ -12,6 +12,8 @@ django-filter = "*"
 django-extensions = "*"
 factory-boy = "*"
 uWSGI = "*"
+django-rest-swagger = "*"
+django-cors-headers = "==3.2.1"
 
 [dev-packages]
 pytest-cov = "==2.8.1"

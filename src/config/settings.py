@@ -144,12 +144,14 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1',
     ]
+
 # ------------------------------------------#
 # Rest Framework
 # ------------------------------------------#
 INSTALLED_APPS += (
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
 )
 
 REST_FRAMEWORK = {
@@ -164,10 +166,23 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 # ------------------------------------------#
+# corsheaders
+# ------------------------------------------#
+INSTALLED_APPS += [
+    'corsheaders',
+]
 
+# Order : Right after session middleware
+CUSTOM_MIDDLEWARE_CLASSES.update({
+    'corsheaders.middleware.CorsMiddleware':
+        BASE_MIDDLEWARE_CLASSES['django.contrib.sessions.middleware.SessionMiddleware'] - 1,
+})
+
+# ------------------------------------------#
 # Plant App
 # ------------------------------------------#
 INSTALLED_APPS += [
@@ -187,6 +202,8 @@ else:
     DATAPOINT_FETCH_BASE_URL = os.getenv('DATAPOINT_FETCH_BASE_URL', 'http://localhost:5000/')
 
 DATAPOINT_FETCH_URL = DATAPOINT_FETCH_BASE_URL + os.getenv('DATAPOINT_FETCH_URL_FORMAT', '?plant-id={}&from={}&to={}')
+
+# ------------------------------------------#
 # Django Filter
 # ------------------------------------------#
 INSTALLED_APPS += [
