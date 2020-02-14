@@ -28,12 +28,12 @@ sys.path.insert(2, APPS_DIR)
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', False)
+DEBUG = bool(int(os.environ.get('DEBUG', False)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', os.environ.get('HOST_NAME', 'localhost')]
 
 # Application definition
 
@@ -178,9 +178,10 @@ INSTALLED_APPS += [
 # ------------------------------------------#
 # Misc
 # ------------------------------------------#
-INSTALLED_APPS += [
-    'django_extensions',
-]
+if DEBUG:
+    INSTALLED_APPS += [
+        'django_extensions',
+    ]
 
 # ------------------------------------------#
 # REDIS
@@ -231,5 +232,4 @@ CELERY_BEAT_SCHEDULE = {
 #  -------------------------------------------#
 # Don't change following section
 # -------------------------------------------#
-
 MIDDLEWARE = build_component_list(BASE_MIDDLEWARE_CLASSES, CUSTOM_MIDDLEWARE_CLASSES)

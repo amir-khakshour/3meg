@@ -1,6 +1,5 @@
 VENV = venv
 PYTEST = $(PWD)/$(VENV)/bin/py.test
-
 .PHONY: build test clean venv
 
 all: clean_py build server
