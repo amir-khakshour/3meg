@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from django.conf import settings
-from ..models import Plant, DataPoint
+from rest_framework import serializers
+
+from ..models import DataPoint, Plant
 
 
 class PlantSerializer(serializers.ModelSerializer):

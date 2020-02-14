@@ -1,13 +1,13 @@
 import datetime
 import random
 
+from django.db.models import Count, Max, Min
 from django.urls import reverse
-from django.db.models import Min, Max, Count
 from django.utils.timezone import make_naive
 
-from tests.utils import APITest
-from tests.factories import DataPointFactory
 from plant.models import DataPoint
+from tests.factories import DataPointFactory
+from tests.utils import APITest
 
 
 class DataPointAPITest(APITest):

@@ -1,7 +1,7 @@
-from django.db import models
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.db import models
 from django.template.defaultfilters import date as date_filter
+from django.utils.translation import ugettext_lazy as _
 
 
 class Plant(models.Model):

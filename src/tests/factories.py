@@ -1,10 +1,11 @@
 import datetime
-import factory
-from factory import fuzzy
-from django.utils import timezone
-from django.contrib.auth import get_user_model
 
-from plant.models import Plant, DataPoint
+import factory
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from factory import fuzzy
+
+from plant.models import DataPoint, Plant
 
 
 class UserFactory(factory.django.DjangoModelFactory):

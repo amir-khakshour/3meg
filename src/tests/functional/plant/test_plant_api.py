@@ -1,7 +1,6 @@
-from tests.utils import APITest
-from tests.factories import PlantFactory
-
 from plant.models import DataPoint
+from tests.factories import PlantFactory
+from tests.utils import APITest
 
 
 class PlantAPITest(APITest):

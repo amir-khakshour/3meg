@@ -1,9 +1,6 @@
 from rest_framework import routers
 
-from .views import (
-    PlantViewSet,
-    DataPointViewSet,
-)
+from .views import DataPointViewSet, PlantViewSet
 
 app_name = 'api_plant'
 router = routers.DefaultRouter()

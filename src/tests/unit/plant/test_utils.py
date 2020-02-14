@@ -1,5 +1,6 @@
-from plant.drf.utils import override_serializer
 from rest_framework.viewsets import GenericViewSet
+
+from plant.drf.utils import override_serializer
 
 
 class DummySerializer(object):
