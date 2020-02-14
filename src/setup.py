@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-setup(name="3megawat", packages=find_packages())
 
 test_requires = [
     'WebTest==2.0.34',
@@ -12,3 +11,11 @@ test_requires = [
     'tox>=3.14,<3.15',
     'freezegun>=0.3,<0.4',
 ]
+
+setup(
+    name="3megawat",
+    packages=find_packages(),
+    extras_require={
+        'test': test_requires,
+    },
+)

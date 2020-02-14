@@ -53,7 +53,7 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
-src/.env
+src/venv
 src/db.sqlite3
 
 src/celerybeat-schedule.db
