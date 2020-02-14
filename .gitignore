@@ -57,3 +57,5 @@ src/venv
 src/db.sqlite3
 
 src/celerybeat-schedule.db
+
+backend/
