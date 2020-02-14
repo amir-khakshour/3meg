@@ -22,6 +22,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - PROKECT_NAME=${PROKECT_NAME}
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=${DEBUG}
       - CELERY_BROKER_HOST=${CELERY_BROKER_HOST}
