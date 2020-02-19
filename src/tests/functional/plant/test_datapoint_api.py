@@ -22,7 +22,8 @@ class DataPointAPITest(APITest):
     def test_datapoint_list(self):
         self.response = self.get("api_plant:datapoint-list")
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), self.num_datapoints)
+        self.assertIsNotNone(self.response.body)
+        self.assertEqual(self.response.body['count'], self.num_datapoints)
 
     def test_datapoint_filter_range(self):
         agg = DataPoint.objects.aggregate(datetime__min=Min('datetime'),
@@ -38,7 +39,7 @@ class DataPointAPITest(APITest):
                                          'datetime__lte': datetime__max})
 
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), agg['count'])
+        self.assertEqual(self.response.body['count'], agg['count'])
 
         # Filter all data
         self.response = self.client.get(reverse("api_plant:datapoint-list", kwargs={'version': 1}),
@@ -46,7 +47,7 @@ class DataPointAPITest(APITest):
                                          'datetime__gt': datetime__max})
 
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), 0)
+        self.assertEqual(self.response.body, 0)
 
     def test_datapoint_filter_exact_date(self):
         """"
@@ -61,7 +62,7 @@ class DataPointAPITest(APITest):
         )
 
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), high_volume_item['total_datapoints'])
+        self.assertEqual(self.response.body['count'], high_volume_item['total_datapoints'])
 
     def test_datapoint_filter_date_range(self):
         agg = list(self.agg_datapoints_by_date)
@@ -75,4 +76,4 @@ class DataPointAPITest(APITest):
         )
 
         self.response.assertStatusEqual(200)
-        self.assertEqual(len(self.response.body), total_datapoints_to_item)
+        self.assertEqual(self.response.body['count'], total_datapoints_to_item)
